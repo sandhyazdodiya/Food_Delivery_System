@@ -40,6 +40,8 @@ INSTALLED_APPS = [
 
     #custom-app
     'app',
+    'cloudinary',
+
 
 ]
 
@@ -58,7 +60,7 @@ ROOT_URLCONF = 'adminpanel.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['adminpanel-ui/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -130,3 +132,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+CLOUDINARY = {
+  'cloud_name': CFG['cloudinary']['cloud_name'],  
+  'api_key': CFG['cloudinary']['api_key'],  
+  'api_secret': CFG['cloudinary']['api_secret']  
+}
