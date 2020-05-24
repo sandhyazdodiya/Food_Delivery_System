@@ -1,2 +1,2 @@
-Django==2.2.11
+Django==2.0.6
 yamjam==0.1.7
