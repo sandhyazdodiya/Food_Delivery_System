@@ -8,7 +8,7 @@ database:
     host: customizedmasks.mysql.pythonanywhere-services.com
 
 cloudinary:
-   'cloud_name': 'dyspo85lp'  
-   'api_key': '334421428144688' 
-   'api_secret': 'kmwPaXG7kY-DO4eCkHIvUXnf8_I'
+   cloud_name: dyspo85lp  
+   api_key: 334421428144688
+   api_secret: kmwPaXG7kY-DO4eCkHIvUXnf8_I
 

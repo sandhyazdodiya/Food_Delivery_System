@@ -1,3 +1,4 @@
 Django==3.0.6
 yamjam==0.1.7
 cloudinary-1.20.0
+djangorestframework==3.10.3

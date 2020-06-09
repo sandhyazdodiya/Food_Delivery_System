@@ -40,9 +40,10 @@ INSTALLED_APPS = [
 
     #custom-app
     'app',
+    'custom_user',
+    
     'cloudinary',
-
-
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -54,7 +55,13 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
+# REST_FRAMEWORK = {
+#     # Use Django's standard `django.contrib.auth` permissions,
+#     # or allow read-only access for unauthenticated users.
+#     'DEFAULT_PERMISSION_CLASSES': [
+#         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+#     ]
+# }
 ROOT_URLCONF = 'adminpanel.urls'
 
 TEMPLATES = [
@@ -127,7 +134,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-
+AUTH_USER_MODEL = 'custom_user.User'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
