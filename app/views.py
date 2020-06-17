@@ -9,6 +9,13 @@ from rest_framework import viewsets
 from .serializers import FriendSerializer,BelongingSerializer,BorrowedSerializer
 from custom_user.serializers import UserSerializer
 from custom_user.models import *
+from custom_user.serializers import *
+from rest_framework.views import APIView
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from django.contrib.auth import authenticate, login, logout
+from rest_framework.response import Response
+from rest_framework import status
+from django.views import View
 def filter_nones(d):
     return dict((k, v) for k, v in six.iteritems(d) if v is not None)
 def upload(request):
@@ -21,7 +28,7 @@ def upload(request):
         form.save()
 
   return render(request, 'upload.html', context)
-def list(request):
+def display(request):
     defaults = dict(format="jpg", height=150, width=150)
     defaults["class"] = "thumbnail inline"
 
@@ -53,3 +60,34 @@ class BorrowedViewset(viewsets.ModelViewSet):
 class UserViewset(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    def create(self, request, *args, **kwargs):
+        serializer = super().create(request, *args, **kwargs)
+        return Response({"Success": "Registered Sucessfully"},)
+class LoginPage(View):
+    template_name = "login.html"
+    def get(self, request):
+        return render(request, self.template_name)
+class LoginViewSet(APIView):
+    """
+        User Login
+        :param value: username, password -- Username will be email or username
+        :return: user's email, token
+    """
+    permission_classes = (AllowAny, )
+
+    def post(self, request):
+        username = request.data.get("email", None)
+        password = request.data.get("password", None)
+
+        if username is None or password is None:
+            return HttpResponse('Please provide both username and password.')
+        user = authenticate(username=username, password=password)
+
+        if not user:
+            return HttpResponse('The username is not a registered admin panel account.')
+            
+        if not user.is_active:
+            return HttpResponse('Please contact an administrator regarding this account.')
+
+        login(request, user)
+        return HttpResponse('Login Success: User logged in Successfully')

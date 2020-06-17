@@ -52,7 +52,7 @@ class CustomAbstractUser(AbstractBaseUser, PermissionsMixin):
     )
     first_name = models.CharField(_('first name'), max_length=30, blank=True)
     last_name = models.CharField(_('last name'), max_length=150, blank=True)
-    email = models.EmailField(_('email address'), blank=True,unique=True)
+    email = models.EmailField(_('email address'),unique=True)
     is_staff = models.BooleanField(
         _('staff status'),
         default=False,
@@ -60,7 +60,7 @@ class CustomAbstractUser(AbstractBaseUser, PermissionsMixin):
     )
     is_active = models.BooleanField(
         _('active'),
-        default=True,
+        default=False,
         help_text=_(
             'Designates whether this user should be treated as active. '
             'Unselect this instead of deleting accounts.'
@@ -68,7 +68,7 @@ class CustomAbstractUser(AbstractBaseUser, PermissionsMixin):
     )
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
     user_type = models.PositiveSmallIntegerField(choices=USER_TYPE_CHOICES)
-    phone=models.CharField(max_length=20,null=True,blank=True)
+    phone=models.CharField(max_length=20,unique=True)
 
     objects = CustomUserManager()
 

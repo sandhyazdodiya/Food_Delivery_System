@@ -139,7 +139,11 @@ AUTH_USER_MODEL = 'custom_user.User'
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+   'adminpanel-ui/static',
+)
 
+#STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 CLOUDINARY = {
   'cloud_name': CFG['cloudinary']['cloud_name'],  
   'api_key': CFG['cloudinary']['api_key'],  
