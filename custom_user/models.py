@@ -68,7 +68,7 @@ class CustomAbstractUser(AbstractBaseUser, PermissionsMixin):
     )
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
     user_type = models.PositiveSmallIntegerField(choices=USER_TYPE_CHOICES)
-    phone=models.CharField(max_length=20,unique=True)
+    phone=models.CharField(max_length=20,unique=True,null=False,blank=False)
 
     objects = CustomUserManager()
 
@@ -110,3 +110,4 @@ class User(CustomAbstractUser):
     """
     class Meta(CustomAbstractUser.Meta):
         swappable = 'AUTH_USER_MODEL'
+        

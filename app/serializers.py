@@ -1,17 +1,26 @@
 from rest_framework import serializers
-from . import models
+from app.models.restaurant import Restaurant
+from app.models.delivery import DeliveryPerson
+from custom_user.serializers import *
+from custom_user.models import *
 
-class FriendSerializer(serializers.ModelSerializer):
+class RestaurantProfileSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
     class Meta:
-        model = models.Friend
-        fields = ('id', 'name')
-
-class BelongingSerializer(serializers.ModelSerializer):
+        model = Restaurant
+        fields = ['user','name','description','city','state','country']
+    def create(self, validated_data):
+        user_data = dict(validated_data.pop('user'))
+        user = User.objects.create_superuser(**user_data)
+        restaurant = Restaurant.objects.create(user=user,**validated_data)
+        return restaurant
+class DeliveryPersonProfileSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
     class Meta:
-        model = models.Belonging
-        fields = ('id', 'name')
-
-class BorrowedSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Borrowed
-        fields = ('id', 'what', 'to_who', 'when', 'returned')
+        model = DeliveryPerson
+        fields = ['user','name','description','city','state','country']
+    def create(self, validated_data):
+        user_data = dict(validated_data.pop('user'))
+        user = User.objects.create_superuser(**user_data)
+        delivery_person = DeliveryPerson.objects.create(user=user,**validated_data)
+        return delivery_person

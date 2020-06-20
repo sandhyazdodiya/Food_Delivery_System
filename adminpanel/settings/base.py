@@ -142,7 +142,9 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
    'adminpanel-ui/static',
 )
-
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_COOKIE_AGE = int(CFG['session']['expire_time']) * 60 #
+SESSION_SAVE_EVERY_REQUEST = True
 #STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 CLOUDINARY = {
   'cloud_name': CFG['cloudinary']['cloud_name'],  

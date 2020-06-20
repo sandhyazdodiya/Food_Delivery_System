@@ -1,0 +1,40 @@
+{% extends 'login-base.html' %}{% load static %}
+{% block title %}Restaurant Registration Page{% endblock %}
+{% block content %}
+<div class="register-block">
+<form id="restaurant-signup">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><i class="fa fa-phone" aria-hidden="true"></i>
+      </span>
+    </div>
+    <input type="text" class="form-control" placeholder="Enter mobile number" name="phone">
+  </div>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><i class="fa fa-envelope" aria-hidden="true"></i>
+      </span>
+    </div>
+    <input type="email" class="form-control" placeholder="Enter email" name="email">
+  </div>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><i class="fa fa-user" aria-hidden="true"></i>
+      </span>
+    </div>
+    <input type="text" class="form-control" placeholder="Enter name" name="name">
+  </div>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><i class="fa fa-key" aria-hidden="true"></i>
+      </span>
+    </div>
+    <input type="password" class="form-control"  placeholder="Enter password" name="password">
+  </div>
+  <button type="submit" class="btn btn-primary btn-lg btn-block">Register</button>
+  </form>
+</div>
+{% endblock %}
+{% block js_files %}
+<script src= "{% static 'assets/js/user-signup.js' %}"></script>
+{% endblock %}
