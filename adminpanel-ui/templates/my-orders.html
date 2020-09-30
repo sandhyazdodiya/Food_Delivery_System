@@ -1,0 +1,15 @@
+
+{% extends 'base.html' %}{% load static %}
+{% block title %}My orders{% endblock %}
+{% block content %}
+<div class="row">
+    {% for order in orders %}
+    
+      <div>{{order}}</div>
+{% endfor %}
+</div>
+{% endblock %}
+
+{% block js_files %}
+
+{% endblock %}

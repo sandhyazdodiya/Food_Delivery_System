@@ -11,26 +11,34 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.views import View
 from django.shortcuts import render, redirect
+from .user import *
+from app.models.admin import Admin
+from core.utils import *
 
-
-class UserViewset(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    def create(self, request, *args, **kwargs):
-        serializer = super().create(request, *args, **kwargs)
-        return Response({"Success": "Registered Sucessfully"},)
 
 class LoginPage(View):
+
     template_name = "login.html"
+    resaturant_dashboard="restaurant/restaurant-dashboard.html"
+
     def get(self, request):
         if request.user and request.user.is_authenticated:
-            return HttpResponse("success")
+            if (request.user.user_type == 1):
+                return HttpResponse('admin dashboard')
+            if (request.user.user_type == 2):
+                return redirect('restaurant-dashboard')
+            if (request.user.user_type == 3):
+                return HttpResponse('delivery partner dashboard')
+            if (request.user.user_type == 4):
+                return redirect('user-dashboard')
         return render(request, self.template_name)
+
+
 class LoginViewSet(APIView):
     """
-        User Login
-        :param value: username, password -- Username will be email or username
-        :return: user's email, token
+         User Login
+        :param value: email, password 
+        :return
     """
     permission_classes = (AllowAny, )
 
@@ -39,14 +47,31 @@ class LoginViewSet(APIView):
         password = request.data.get("password", None)
 
         if username is None or password is None:
-            return HttpResponse('Please provide both username and password.')
+            return error_response('Please provide both username and password.')
         user = authenticate(username=username, password=password)
-
+        
         if not user:
-            return HttpResponse('The username is not a registered admin panel account.')
+            return error_response('The username is not a registered admin panel account.')
             
         if not user.is_active:
-            return HttpResponse('Please contact an administrator regarding this account.')
+            return error_response('Please contact an administrator regarding this account.')
 
         login(request, user)
-        return HttpResponse('Login Success: User logged in Successfully')
+        return success_response('Login Success: User logged in Successfully')
+
+        
+class LogoutViewSet(View):
+    
+    template_name = "login.html"
+
+    def get(self, request):
+        logout(request)
+        return render(request, self.template_name)
+
+
+class AdminViewset(viewsets.ModelViewSet):
+    queryset = Admin.objects.all()
+    serializer_class = AdminProfileSerializer
+    def create(self, request, *args, **kwargs):
+        serializer = super().create(request, *args, **kwargs)
+        return Response({"Success": "Registered Sucessfully"},)

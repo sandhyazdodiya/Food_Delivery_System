@@ -55,13 +55,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-# REST_FRAMEWORK = {
-#     # Use Django's standard `django.contrib.auth` permissions,
-#     # or allow read-only access for unauthenticated users.
-#     'DEFAULT_PERMISSION_CLASSES': [
-#         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-#     ]
-# }
+
 ROOT_URLCONF = 'adminpanel.urls'
 
 TEMPLATES = [
@@ -150,4 +144,10 @@ CLOUDINARY = {
   'cloud_name': CFG['cloudinary']['cloud_name'],  
   'api_key': CFG['cloudinary']['api_key'],  
   'api_secret': CFG['cloudinary']['api_secret']  
+}
+REST_FRAMEWORK = {
+    # 'DEFAULT_RENDERER_CLASSES': [
+    #     'rest_framework.renderers.JSONRenderer',
+    #     ],
+    'EXCEPTION_HANDLER': 'core.utils.custom_exception_handler',
 }

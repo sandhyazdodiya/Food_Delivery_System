@@ -6,6 +6,8 @@ from django.views import View
 from django.shortcuts import render, redirect
 from custom_user.models import *
 from custom_user.serializers import *
+
+
 class DeliveryPersonViewset(viewsets.ModelViewSet):
     queryset = DeliveryPerson.objects.all()
     serializer_class = DeliveryPersonProfileSerializer

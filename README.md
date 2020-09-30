@@ -1,5 +1,8 @@
 # Food Delivery System.
 I am developing this web-app for learning purpose.
+
+
+
 A. User Sign-UP:
 -------------------
 1.  Url: /user-signup/
@@ -27,6 +30,7 @@ A. User Sign-UP:
     }
 	
 B. User Login
+-------------------
 1. Url:/login/
    Action:Render user-login page
    Method:GET
@@ -38,7 +42,10 @@ B. User Login
    "password": "pbkdf2_sha256$180000$m9A56tw3rbiP$KP4CTGYICWz1mdrvQQpWlgTkKXFBdv/5yHI0hFu9QxM=",
    "user_type": 1,----[(1, 'admin'),(2, 'restaurant'),(3, 'dpartner'),(4, 'user')]
    }
+   
+   
 C. Restaurant Sign-UP
+-------------------
 1. Url:/restaurant/api/
    Action:Restaurant Registration
    Method:POST
@@ -59,6 +66,7 @@ C. Restaurant Sign-UP
     },
 	
 D. Delivery Person Sign-UP
+-------------------
 1. Url:/delivery/api/
    Action:Restaurant Registration
    Method:POST

@@ -2,6 +2,10 @@
 {% block title %}User Login{% endblock %}
 {% block content %}
 <div class="register-block">
+  <div class="text-center mb-5">
+    <h2 class="mb-3">Login</h2>
+    <img src="{% static 'assets/img/user/img_avatar.png' %}" alt="Avatar" class="login-avatar">
+  </div>
 <form id="user-login">
 
   <div class="input-group mb-3">
@@ -18,6 +22,9 @@
       </span>
     </div>
     <input type="password" class="form-control"  placeholder="Enter password" name="password">
+  </div>
+  <div class="checkbox  mb-3">
+    <label><input type="checkbox"> Remember me</label>
   </div>
   <button type="submit" class="btn btn-primary btn-lg btn-block">Login</button>
   </form>

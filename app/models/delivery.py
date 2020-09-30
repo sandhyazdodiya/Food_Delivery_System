@@ -1,6 +1,8 @@
 from django.db import models
 from custom_user.models import *
-# Create your models here.
+
+
+# model for DevliveryPerson Profile
 class DeliveryPerson(models.Model):
     user = models.OneToOneField(User,on_delete = models.CASCADE,related_name='delivery_person') 
     name=models.CharField(max_length=20)
