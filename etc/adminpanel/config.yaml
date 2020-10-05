@@ -2,13 +2,9 @@ main:
     debug: True
 
 database:
-    name: customizedmasks$adminpanel
-    username: customizedmasks
-    password: Udaydodiya
-    host: customizedmasks.mysql.pythonanywhere-services.com
-
-cloudinary:
-   cloud_name: dyspo85lp  
-   api_key: 334421428144688
-   api_secret: kmwPaXG7kY-DO4eCkHIvUXnf8_I
+    name: food_delivery
+    username: root
+    password: 
+    host: localhost
+    port: 3306
 
