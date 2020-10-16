@@ -5,7 +5,7 @@ $( document ).ready(function() {
         e.preventDefault();
         var data = util.getFormData(this);
         
-        api_manager.sendRequest("/fooditem/api/","post" , data, function(resp){
+        api_manager.sendRequest("api/fooditem/","post" , data, function(resp){
             if(resp.type === "+OK") {
                 if(method === "post"){
                     console.log(data)
@@ -20,7 +20,7 @@ $( document ).ready(function() {
         e.preventDefault();
         var data = util.getFormData(this);
         
-        api_manager.sendRequest(`/fooditem/api/`+data.id+`/`,"patch" , data, function(resp){
+        api_manager.sendRequest(`api/fooditem/`+data.id+`/`,"patch" , data, function(resp){
             if(resp.type === "+OK") {
                 if(method === "patch"){
                     console.log(data)

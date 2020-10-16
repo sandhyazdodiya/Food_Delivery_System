@@ -136,7 +136,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
    'adminpanel-ui/static',
 )
-
+LOGIN_URL = '/login/'
 REST_FRAMEWORK = {
     # 'DEFAULT_RENDERER_CLASSES': [
     #     'rest_framework.renderers.JSONRenderer',

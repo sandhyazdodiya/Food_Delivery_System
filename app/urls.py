@@ -10,22 +10,22 @@ router = routers.DefaultRouter()
 
 
 #Restaurant
-router.register(r'restaurant/api',RestaurantViewset)    #Register Restaurant 
-router.register(r'fooditem/api',FoodItemViewset)
-router.register(r'order/api',OrderViewset)
-router.register(r'orderitem/api',OrderItemViewset)
+router.register(r'restaurant',RestaurantViewset)    #Register Restaurant 
+router.register(r'fooditem',FoodItemViewset)
+router.register(r'order',OrderViewset)
+router.register(r'orderitem',OrderItemViewset)
 
 #Register DeliveryPerson
-router.register(r'delivery/api',DeliveryPersonViewset)
+router.register(r'delivery',DeliveryPersonViewset)
 
 #Register Customer
-router.register(r'customer/api',CustomerViewset)
+router.register(r'customer',CustomerViewset)
 
 #Register Admin
-router.register(r'admin/api',AdminViewset)
+router.register(r'admin',AdminViewset)
 
 urlpatterns = [
-    path('login/', LoginPage.as_view(), name='login-page'),
+    path('', LoginPage.as_view(), name='login-page'),
     path('login/api/', LoginViewSet.as_view(), name='login'),
     path('logout/', LogoutViewSet.as_view(), name='logout-page'),
     #User
@@ -43,5 +43,5 @@ urlpatterns = [
     path('edit-food-profile/<int:food_id>', FoodItemView.as_view(), name='edit-food-profile'),
     path('add_to_cart/',AddtoCartViewSet.as_view(), name='add-to-cart'),
     
-    path('', include(router.urls)),
+    path('api/', include(router.urls)),
 ]

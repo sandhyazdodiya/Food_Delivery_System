@@ -52,6 +52,7 @@ class ApiManager {
     handleError(error){
         var resp_json = error.responseJSON;
         if (resp_json == undefined) {
+            console.log(error_msgs.unknown);
             $(".error-msg").text(error_msgs.unknown).show(100);
             return
         }
@@ -163,3 +164,6 @@ class Util {
     }
 }
 
+var error_msgs={
+    unknown:"Please Refresh Page and try again."
+}
