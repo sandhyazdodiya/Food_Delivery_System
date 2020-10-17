@@ -1,5 +1,8 @@
 # Food Delivery System.
-I am developing this web-app for learning purpose.
+Ever since I came to know about how API can do some great wonders since then I wanted to know how this API works from backend to frontend.
+I am developing this project to learn something new and to satisfy my curiosity.
+
+I always get fascinated by new technologies.
 
 
 
