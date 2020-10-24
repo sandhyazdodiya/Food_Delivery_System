@@ -1,0 +1,55 @@
+{% extends 'customer/base.html' %}{% load static %}{% load custom_tags %}
+{% block title %}Cart{% endblock %}
+
+{% block content %}
+
+<div class="row">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Sno.</th>
+                    <th>Image</th>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for fooditem in fooditems%}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    
+                    <td>
+                        {% if fooditem.image %}
+                        <img style="height: 50px; width: 50px;" class="rounded-circle" src="http://{{request.get_host}}/media/{{fooditem.image}}" alt=""></td>
+                        {% else %}
+                        <img style="height: 50px; width: 50px;" class="rounded-circle" src="{% static 'assets/img/restaurant/avatar-5.jpg' %}" alt=""></td>
+                        {% endif %}
+                    <td>{{fooditem.name}}</td>
+                    <td>{{fooditem.price|currency}}</td>
+                    <td>{{fooditem|cart_quantity:request.session.cart}}</td>
+                    <td>{{fooditem|price_total:request.session.cart|currency}}</td>
+                </tr>
+                {% endfor %}
+               
+            </tbody>
+
+            <tfoot>
+                <tr>
+                    <th colspan="4"></th>
+                    <th class="" colspan="">Total</th>
+                    <th id="total_price">{{fooditems|total_cart_price:request.session.cart|currency}}</th>
+                  
+                </tr>
+            </tfoot>
+        </table>
+     
+        <a href="javascript:void(0)" data-price="{{fooditems|total_cart_price:request.session.cart}}" class="btn btn-primary place-order">Place Order</a>
+
+</div>
+{% endblock %}
+
+{% block js_files %}
+<script src= "{% static 'assets/js/customer/cart.js' %}"></script>
+{% endblock %}

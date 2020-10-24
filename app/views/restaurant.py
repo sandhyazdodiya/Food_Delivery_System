@@ -10,6 +10,7 @@ from custom_user.serializers import *
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from core.viewsets import *
+from django.db.models import Count
 
 class RestaurantViewset(viewsets.ModelViewSet):
     queryset = Restaurant.objects.all()
@@ -116,8 +117,8 @@ class FoodsView(View):
         
 class RestaurantOrders(LoginRequiredMixin,View):
     """
-    Render Restaurant Dashboard page.
-    It displays list of food items
+    Render Restaurant Orders page.
+    It displays list of orders
 
     :param request:
     :return:
@@ -128,8 +129,14 @@ class RestaurantOrders(LoginRequiredMixin,View):
     def get(self, request):
         user_id=request.user.id
         restaurant=Restaurant.objects.get(user_id=user_id)
-        foods=FoodItem.objects.filter(restaurant_id=restaurant.id).values_list('id', flat=True)
-        orderitems=OrderItem.objects.filter(food_id__in=foods).values_list('order_id',flat=True).distinct()
+        # foods=FoodItem.objects.filter(restaurant_id=restaurant.id).values_list('id', flat=True)
+        # orderitems=OrderItem.objects.filter(food_id__in=foods).values_list('order_id',flat=True).distinct()
+
+        foods=FoodItem.get_fooditems_by_restaurant(restaurant.id)
+        print(foods)
+        orderitems=OrderItem.objects.filter(food_id__in=foods)
+
+        print(orderitems)
         # orderitems=OrderItem.objects.filter(food_id__in=foods).values_list('food_id',flat=True)
         # orderedfoods=FoodItem.objects.filter(id__in=orderitems)
         return render(request, self.template_name, locals())

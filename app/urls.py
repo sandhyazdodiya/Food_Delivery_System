@@ -43,6 +43,8 @@ urlpatterns = [
     path('create-food-profile/', login_required(FoodItemView.as_view()), name='create-food-profile'),
     path('edit-food-profile/<int:food_id>', login_required(FoodItemView.as_view()), name='edit-food-profile'),
     path('add-to-cart/',login_required(AddtoCartViewSet.as_view()), name='add-to-cart'),
+    path('cart/', login_required(CartView.as_view()), name='user-cart'),
+    path('place-order/',login_required(PlaceOrderAPIView.as_view()), name='place-order'),
     path('foods/', login_required(FoodsView.as_view()), name='food-list'),
     
     path('api/', include(router.urls)),

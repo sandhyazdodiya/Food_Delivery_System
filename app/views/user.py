@@ -42,7 +42,6 @@ class AddtoCartViewSet(APIView):
     def post(self,request):
         food_id=request.data.get("food_id",None)
         action=request.data.get("action",None)
-        print(action)
         if food_id is not None or action is not None:
             cart=request.session.get("cart")
             if cart:
@@ -62,7 +61,6 @@ class AddtoCartViewSet(APIView):
                 cart[food_id] = 1
 
             request.session['cart'] = cart
-            print('cart' , request.session['cart'])
             return success_response('Added Successfully')
         else:
             return error_response('Error While adding into cart',None,status.HTTP_400_BAD_REQUEST)
@@ -76,3 +74,39 @@ class UserOrdersView(LoginRequiredMixin,View):
         customer=Customer.objects.get(user_id=customer_id)
         orders=Order.objects.filter(customer=customer)
         return render(request, self.template_name, locals())
+
+
+
+class CartView(LoginRequiredMixin,View):
+    
+    template_name = "customer/cart.html"
+
+    def get(self, request):
+        cart=request.session.get('cart')
+        ids = list(cart.keys())
+        fooditems = FoodItem.get_fooditems_by_id(ids)
+        return render(request, self.template_name, locals())
+
+class PlaceOrderAPIView(APIView):
+    def post(self,request):
+        customer_id=request.session.get("customer_id",None)
+        cart = request.session.get('cart',None)
+        price=request.data.get("price",None)
+        if price and cart and customer_id:
+            fooditems = FoodItem.get_fooditems_by_id(list(cart.keys()))
+            order=Order(customer=Customer(customer_id),
+                        status="active",
+                        price=price )
+            order.save()
+            for fooditem in fooditems:
+                print(cart.get(str(fooditem.id)))
+                orderitem = OrderItem(order=order,
+                            food=fooditem,
+                            quantity=cart.get(str(fooditem.id)),
+                            status="active",
+                            price=fooditem.price)
+                orderitem.save()
+            request.session['cart'] = {}
+            return success_response('Order created successfully')
+        else:
+            return error_response('Error While Placing order',None,status.HTTP_400_BAD_REQUEST)

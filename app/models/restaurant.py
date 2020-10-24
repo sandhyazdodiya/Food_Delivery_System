@@ -23,19 +23,24 @@ class FoodItem(models.Model):
         constraints = [
             models.UniqueConstraint(fields=['name', 'restaurant_id'], name='unique_food_name')
         ]
-class Order(models.Model):
-    customer=models.ForeignKey(Customer,on_delete = models.CASCADE)
-    status=models.CharField(max_length=20)
-    charge=models.IntegerField(null=True)
+    @staticmethod
+    def get_fooditems_by_id(ids):
+        return FoodItem.objects.filter(id__in =ids)
 
-#model for Order
+    @staticmethod
+    def get_fooditems_by_restaurant(id):
+        return FoodItem.objects.filter(restaurant_id =id)
+
+#model for Order      
 class Order(models.Model):
     customer=models.ForeignKey(Customer,on_delete = models.CASCADE)
     status=models.CharField(max_length=20)
-    charge=models.IntegerField(null=True)
+    price=models.IntegerField(null=True)
 
 #model for OrderItem
 class OrderItem(models.Model):
     order=models.ForeignKey(Order,on_delete=models.CASCADE)
     food=models.ForeignKey(FoodItem,on_delete=models.CASCADE)
     quantity=models.IntegerField(null=True)
+    status=models.CharField(max_length=20,null=True)
+    price=models.IntegerField(null=True)
