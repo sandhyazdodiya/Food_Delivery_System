@@ -8,10 +8,9 @@ $( document ).ready(function() {
         console.log(data)
         api_manager.sendRequest('/login/api/',"post",data, function(resp){
             if(resp.type === "+OK") {
-                
+                window.location.href = "/login/";
                     console.log(data)
-                
-            }
+                }
         });
     });
 });

@@ -1,0 +1,47 @@
+{% extends 'restaurant/restaurant-base.html' %}{% load static %}
+{% block title %}{% if action == "edit" %}Update Food Details {% else %}Add New Food{% endif %}{% endblock %}
+{% block header %} {% if action == "edit" %}Update Food Details {% else %}Add New Food{% endif %}{% endblock %}
+{% block content %}
+<div class="card o-hidden border-0 shadow-lg ">
+      <div class="card-body p-0">
+        <!-- Nested Row within Card Body -->
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="p-5">
+              <form  class="user" id="food-{{action}}-form"  enctype="multipart/form-data">
+                {% if action == "edit" %}
+                <input type="hidden" name="id" id="food_id" value={{food.id}}>
+                {% endif %}
+                <div class="form-group row">
+                  <div class="col-sm-6 mb-3 mb-sm-0">
+                    <input type="text" name="name" value="{{food.name}}" class="form-control form-control-user"  placeholder="Item Name">
+                  </div>
+                  <div class="col-sm-6">
+                    <input type="text" name="description" value="{{food.description}}" class="form-control form-control-user" placeholder="Item Description">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-sm-6 mb-3 mb-sm-0">
+                    <input type="text" name="price" value="{{food.price}}" class="form-control form-control-user" placeholder="Item Price">
+                  </div>
+                  <div class="col-sm-6">
+                    <input type="file" name="image">
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-user" style="text-align:center;">
+                  {% if action == "edit" %}Update{% else %}Add {% endif %}                
+                </button>
+              </form>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+{% endblock %}
+{% block js_files %}
+<script src= "{% static 'assets/js/restaurant/food.js' %}"></script>
+{% endblock %}

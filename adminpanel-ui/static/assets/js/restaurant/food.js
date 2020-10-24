@@ -3,40 +3,45 @@ $( document ).ready(function() {
     var util = new Util();
     $("#food-create-form").submit(function(e){
         e.preventDefault();
-        var data = util.getFormData(this);
+        var data= new FormData(this);
         
-        api_manager.sendRequest("api/fooditem/","post" , data, function(resp){
+        api_manager.sendRequest("/api/fooditem/","post" , data, function(resp){
             if(resp.type === "+OK") {
-                if(method === "post"){
                     console.log(data)
-                }
+                
             } else {
                 console.log("Response err");
             }
-        });
+        },undefined,false);
        
     });
+    
     $("#food-edit-form").submit(function(e){
         e.preventDefault();
-        var data = util.getFormData(this);
+        var data= new FormData(this);
+        var id= $("#food_id").val();
         
-        api_manager.sendRequest(`api/fooditem/`+data.id+`/`,"patch" , data, function(resp){
+        api_manager.sendRequest(`/api/fooditem/`+id+`/`,"patch" , data, function(resp){
             if(resp.type === "+OK") {
-                if(method === "patch"){
                     console.log(data)
-                }
+                
             } else {
                 console.log("Response err");
             }
-        });
+        },undefined,false);
     });
-function addtocart(id){
-    data = {"id": id}
-    api_manager.sendRequest(`/add_to_cart/`,"post" , data, function(resp){
+
+function addtocart(food_id,action){
+    var data ={}
+    data["food_id"]=food_id
+    data["action"]=action
+    
+    api_manager.sendRequest('/add-to-cart/',"post" , data, function(resp){
         console.log(resp)
         if(resp.type === "+OK") {
             
             console.log(data)
+            window.location.reload(); 
        
         } else {
             console.log("Response err");
@@ -47,7 +52,8 @@ function addtocart(id){
 $(".add-to-cart").on("click",function(e) {
     e.preventDefault();
     food_id = $(this).attr("data-id")
-    console.log(food_id)
-    return addtocart(food_id);
+    action=$(this).attr("data-action")
+    console.log(food_id,action)
+    return addtocart(food_id,action);
 });
 });

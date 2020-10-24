@@ -14,11 +14,11 @@ def success_response(message, data=None, url=None):
     return Response(response, status=status.HTTP_200_OK)
 
 
-def error_response(message, errors=None, status_code=status.HTTP_202_ACCEPTED):
-    response = {"message": message, "status_code": status_code, "type": "-ERR"}
+def error_response(message, errors=None, status=status.HTTP_202_ACCEPTED):
+    response = {"message": message, "status": status, "type": "-ERR"}
     if errors:
         response["errors"] = errors
-    return Response(response, status=status_code)
+    return Response(response, status=status)
 
 
 

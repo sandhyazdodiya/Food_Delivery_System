@@ -9,12 +9,14 @@ from custom_user.models import *
 from custom_user.serializers import *
 from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework.views import APIView
+from core.utils import *
 
 class UserDashboardView(LoginRequiredMixin,View):
     
-    template_name = "dashboard.html"
+    template_name = "customer/dashboard.html"
 
     def get(self, request):
+        print("from session",request.session.get('customer_id'))
         restaurants=Restaurant.objects.all()
         return render(request, self.template_name, locals())
 
@@ -38,18 +40,36 @@ class OrderItemViewset(viewsets.ModelViewSet):
 
 class AddtoCartViewSet(APIView):
     def post(self,request):
-        customer_id=request.user.id
-        food_id=request.data["id"]
-        customer=Customer.objects.get(user_id=customer_id)
-        food=FoodItem.objects.get(id=food_id)
-        print(customer)
-        order,created = Order.objects.get_or_create(customer=customer, status="active")
-        orderItem=OrderItem.objects.create(order=order,food=food)
-        return Response({"Success": "added Sucessfully"},)
+        food_id=request.data.get("food_id",None)
+        action=request.data.get("action",None)
+        print(action)
+        if food_id is not None or action is not None:
+            cart=request.session.get("cart")
+            if cart:
+                quantity = cart.get(food_id)
+                if quantity:
+                    if action =="remove":
+                        if quantity<=1:
+                            cart.pop(food_id)
+                        else:
+                            cart[food_id] = quantity-1
+                    else:
+                        cart[food_id] = quantity+1
+                else:
+                    cart[food_id] = 1
+            else:
+                cart = {}
+                cart[food_id] = 1
+
+            request.session['cart'] = cart
+            print('cart' , request.session['cart'])
+            return success_response('Added Successfully')
+        else:
+            return error_response('Error While adding into cart',None,status.HTTP_400_BAD_REQUEST)
 
 class UserOrdersView(LoginRequiredMixin,View):
     
-    template_name = "my-orders.html"
+    template_name = "customer/user-orders.html"
 
     def get(self, request):
         customer_id=request.user.id

@@ -1,80 +1,25 @@
-/* .register-block {
-    box-shadow: 0px 0px 45px -20px rgba(0,0,0,0.2);
-    max-width: 460px;
-    margin: 20px auto;
-    padding: 30px;
-}
-.avatar {
-    vertical-align: middle;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-}
-
-.login-avatar {
-  vertical-align: middle;
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-}
-.navbar-nav { 
-    margin-left: auto; 
-} 
-.sidebar {
-    margin: 0;
-    padding: 0;
-    width: 200px;
-    background-color: #f1f1f1;
-    position: fixed;
-    height: 100%;
-    overflow: auto;
-  }
-  
-  .sidebar a {
-    display: block;
-    color: black;
-    padding: 16px;
-    text-decoration: none;
-  }
-   
-  .sidebar a.active {
-    background-color: #4CAF50;
-    color: white;
-  }
-  
-  .sidebar a:hover:not(.active) {
-    background-color: #555;
-    color: white;
-  }
-  
-  div.content {
-    margin-left: 200px;
-    padding: 1px 16px;
-    height: 1000px;
-    margin-top: 66px;
-  }
-  
-  @media screen and (max-width: 700px) {
-    .sidebar {
-      width: 100%;
-      height: auto;
-      position: relative;
-    }
-    .sidebar a {float: left;}
-    div.content {margin-left: 0;}
-  }
-  
-  @media screen and (max-width: 400px) {
-    .sidebar a {
-      text-align: center;
-      float: none;
-    }
-  } */
-
-  .bg-gradient-primary {
-    background-color: #f38508;
-    background-image: linear-gradient(180deg,#f38508 10%,#dd8016 100%);
+@font-face{
+	font-family:'Montserrat-Regular';
+	src: url('../fonts/Montserrat-Regular.ttf') format('truetype');
+    font-weight: medium;
+  	font-style: normal;
 }
 body {
-  font-family: "Poppins", sans-serif;
+  font-family: "Montserrat-Regular";
+  font-size: 14px;
+}
+.bg-gradient-primary {
+  background-color: #f38508;
+  background-image: linear-gradient(180deg,#f38508 10%,#dd8016 100%);
+}
+.btn-primary {
+  color: #fff;
+  background-color: #f38508;
+  border-color: #f38508;;
+}
+#customer-dashboard .card-body{
+  padding: 10px;
+}
+#customer-dashboard .card-title{
+  margin-bottom: 4px;
 }

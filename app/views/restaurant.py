@@ -2,10 +2,12 @@ from rest_framework import viewsets
 from app.serializers import *
 from app.models.restaurant import Restaurant,FoodItem
 from rest_framework.response import Response
+from rest_framework.parsers import FormParser,MultiPartParser
 from django.views import View
 from django.shortcuts import render, redirect
 from custom_user.models import *
 from custom_user.serializers import *
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from core.viewsets import *
 
@@ -19,7 +21,7 @@ class RestaurantViewset(viewsets.ModelViewSet):
         
 class RestaurantView(View):
     
-    template_name = "restaurant-profile.html"
+    template_name = "restaurant/restaurant-profile.html"
 
     def get(self, request):
         return render(request, self.template_name, locals())
@@ -28,11 +30,16 @@ class RestaurantView(View):
 class FoodItemViewset(ViewSetPatch,viewsets.ModelViewSet):
     queryset = FoodItem.objects.all()
     serializer_class = FoodItemSerializer
+    parser_classes = (FormParser, MultiPartParser)
     def create(self, request, *args, **kwargs):
+        #To make Query dict mutable
+        request.POST._mutable = True
         user_id=self.request.user.id
+        print(request)
         restaurant=Restaurant.objects.filter(user_id=user_id).values('id').last()
         restaurant_id=restaurant.get("id")
         request.data['restaurant'] = restaurant_id
+        print(request.data)
         return super().create(request, *args, **kwargs)
        
 
@@ -46,16 +53,18 @@ class RestaurantMenuView(LoginRequiredMixin,View):
     :param restaurant_id:
     :return:
     """
-
-    template_name = "restaurant-menu.html"
-
+    template_name = "customer/restaurant-menu.html"
+    
     def get(self, request,restaurant_id=None):
+        cart=request.session.get('cart')
+        if not cart:
+            request.session["cart"]= {}
         fooditems=FoodItem.objects.filter(restaurant_id=restaurant_id)
         restaurant=Restaurant.objects.get(id=restaurant_id)
         return render(request, self.template_name, locals())
 
 
-class RestaurantDashaboard(LoginRequiredMixin,View):
+class RestaurantDashaboard(View):
     """
     Render Restaurant Dashboard page.
     It displays list of food items
@@ -65,7 +74,7 @@ class RestaurantDashaboard(LoginRequiredMixin,View):
     """
     
     template_name = "restaurant/restaurant-dashboard.html"
-
+    
     def get(self, request):
         user_id=request.user.id
         restaurant=Restaurant.objects.get(user_id=user_id)
@@ -74,7 +83,7 @@ class RestaurantDashaboard(LoginRequiredMixin,View):
 
 class FoodItemView(View):
     
-    template_name = "restaurant/view-create-food.html"
+    template_name = "restaurant/update-create-food.html"
 
     def get(self, request, food_id=None):
         """
@@ -85,7 +94,6 @@ class FoodItemView(View):
         :param food_id:
         :return:
         """
-
         if food_id:
             try:
                 food = FoodItem.objects.get(id=food_id)
@@ -96,6 +104,16 @@ class FoodItemView(View):
             action = "create"
         return render(request, self.template_name, locals())
 
+class FoodsView(View):
+    
+    template_name = "restaurant/foods.html"
+    
+    def get(self, request):
+        user_id=request.user.id
+        restaurant=Restaurant.objects.get(user_id=user_id)
+        foods=FoodItem.objects.filter(restaurant_id=restaurant.id)
+        return render(request, self.template_name, locals())
+        
 class RestaurantOrders(LoginRequiredMixin,View):
     """
     Render Restaurant Dashboard page.

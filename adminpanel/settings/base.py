@@ -38,12 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    #custom-app
+    #custom-apps
     'app',
     'custom_user',
-    
-   
     'rest_framework',
+
 ]
 
 MIDDLEWARE = [
@@ -136,10 +135,21 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
    'adminpanel-ui/static',
 )
+
+MEDIA_ROOT =  os.path.join(BASE_DIR, '../media') 
+MEDIA_URL = '/media/'
+
 LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/login/'
+LOGOUT_REDIRECT_URL = '/login/'
 REST_FRAMEWORK = {
     # 'DEFAULT_RENDERER_CLASSES': [
     #     'rest_framework.renderers.JSONRenderer',
     #     ],
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser'
+    ],
     'EXCEPTION_HANDLER': 'core.utils.custom_exception_handler',
 }

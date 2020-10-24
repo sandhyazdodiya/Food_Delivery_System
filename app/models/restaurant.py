@@ -16,12 +16,18 @@ class FoodItem(models.Model):
     name=models.CharField(max_length=20)
     description=models.CharField(max_length=200)
     price=models.IntegerField()
+    isnonveg=models.BooleanField(default=False)
+    image = models.FileField(upload_to='documents/',null=True,blank=True,)
     restaurant=models.ForeignKey(Restaurant,on_delete = models.CASCADE)
     class Meta:
         constraints = [
             models.UniqueConstraint(fields=['name', 'restaurant_id'], name='unique_food_name')
         ]
-    
+class Order(models.Model):
+    customer=models.ForeignKey(Customer,on_delete = models.CASCADE)
+    status=models.CharField(max_length=20)
+    charge=models.IntegerField(null=True)
+
 #model for Order
 class Order(models.Model):
     customer=models.ForeignKey(Customer,on_delete = models.CASCADE)

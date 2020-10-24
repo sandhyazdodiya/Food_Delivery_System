@@ -9,3 +9,10 @@ class Customer(models.Model):
     state=models.CharField(max_length=20)
     country=models.CharField(max_length=20)
     
+    def get_customer_by_user_id(user_id):
+        try:
+            return Customer.objects.get(user_id=user_id)
+        except:
+            return False
+
+

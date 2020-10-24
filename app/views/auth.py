@@ -14,7 +14,9 @@ from django.shortcuts import render, redirect
 from .user import *
 from app.models.admin import Admin
 from core.utils import *
-
+from django.conf import settings
+from django.contrib.auth import logout as auth_logout
+from app.models.customer import Customer
 
 class LoginPage(View):
 
@@ -57,6 +59,11 @@ class LoginViewSet(APIView):
             return error_response('Please contact an administrator regarding this account.')
 
         login(request, user)
+        customer=Customer.get_customer_by_user_id(user.id)
+        print("saved",customer)
+        if customer:
+            request.session["customer_id"]=customer.id
+
         return success_response('Login Success: User logged in Successfully')
 
         
@@ -65,8 +72,9 @@ class LogoutViewSet(View):
     template_name = "login.html"
 
     def get(self, request):
+        auth_logout(request)
         logout(request)
-        return render(request, self.template_name)
+        return redirect(settings.LOGIN_URL)
 
 
 class AdminViewset(viewsets.ModelViewSet):
