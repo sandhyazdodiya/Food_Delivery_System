@@ -5,11 +5,13 @@ $( document ).ready(function() {
 
         e.preventDefault();
         var data = util.getFormData(this);
-        console.log(data)
+        
         api_manager.sendRequest('/login/api/',"post",data, function(resp){
             if(resp.type === "+OK") {
                 window.location.href = "/login/";
                     console.log(data)
+                }else{
+                    util.showMsg(".error-msg", resp.message);
                 }
         });
     });

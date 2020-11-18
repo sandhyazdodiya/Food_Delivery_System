@@ -11,13 +11,17 @@
                 <div class="card-body">
                   <h4 class="card-title">{{fooditem.name}}</h4>
                   <p class="card-text">{{fooditem.description}}</p>
+                  <div class="cart in-cart">
                   {% if fooditem|is_in_cart:request.session.cart %}
                   <a href="javascript:void(0)" class="btn btn-primary add-to-cart" data-action="remove" data-id={{fooditem.id}}>-</a>
-                  <span>{{fooditem|cart_quantity:request.session.cart}} in cart </span>
+                  <span class="item-count">{{fooditem|cart_quantity:request.session.cart}}</span> &nbsp; in cart
                   <a href="javascript:void(0)" class="btn btn-primary add-to-cart" data-action="add" data-id={{fooditem.id}}>+</a>
                   {% else %}
+                </div>
+                <div class="cart not-in-cart">
                   <a href="javascript:void(0)" class="btn btn-primary add-to-cart" data-action="add" data-id={{fooditem.id}}>Add to Cart</a>
                   {% endif %}
+                </div>
                 </div>
               </div>
         </div>
@@ -26,5 +30,5 @@
 {% endblock %}
 
 {% block js_files %}
-<script src= "{% static 'assets/js/restaurant/food.js' %}"></script>
+<script src= "{% static 'assets/js/customer/cart.js' %}"></script>
 {% endblock %}

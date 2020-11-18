@@ -23,3 +23,22 @@ body {
 #customer-dashboard .card-title{
   margin-bottom: 4px;
 }
+.error-msg{
+  display: none;
+  padding: 1px;
+  font-size: 13px;
+  text-align: center;
+  margin: 2px 0px;
+}
+.success-msg{
+  display: none;
+  padding: 1px;
+  font-size: 13px;
+  text-align: center;
+  margin: 2px 2px;
+}
+
+.text-right-custom{
+  position: absolute;
+  right:2px;
+}

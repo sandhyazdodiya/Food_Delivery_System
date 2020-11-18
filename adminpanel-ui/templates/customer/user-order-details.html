@@ -1,0 +1,58 @@
+{% extends 'customer/base.html' %}{% load static %}{% load custom_tags %}
+{% block title %}Order Details{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    
+    <div class="col-md-12 col-sm-6">
+        <div class="card">
+            <div class="card-header text-uppercase">
+                
+                
+                <span>
+                    <b>Order # {{order.id}}</b>
+                  </span>
+                
+                <span class="text-right-custom">
+                 
+                  <b>RS {{ order.price }}</b>
+                </span>
+            
+            
+            
+            </div>
+            <div class="items-list">
+                {% for orderitem in orderitems %}
+
+                <div class="il-item">
+                    <a class="text-black" href="#">
+                        <div class="media">
+                            <div class="media-left">
+                                <div class="box-48">
+                                    <img class="img-fluid" src="{% static 'assets/img/restaurant/avatar-5.jpg' %}" alt="">
+                                </div>
+                            </div>
+                            <div class="media-body">
+                                <h6 class="media-heading">{{ orderitem.food.name }}</h6>
+                                <span>{{orderitem.quantity}}</span>
+                                <span class="text-muted text-right-custom">RS {{ orderitem.price }}</span>
+                            </div>
+                        </div>
+                        <!-- <div class="il-icon"><i class="fa fa-angle-right"></i></div> -->
+                    </a>
+                </div>
+                {% endfor %}
+
+            </div>
+            <!-- <div class="card-block">
+                <button type="submit" class="btn btn-primary btn-block">Show more</button>
+            </div> -->
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block js_files %}
+{% endblock %}

@@ -3,14 +3,36 @@
 {% block content %}
 
 <div class="row">
-    {% for orderitem in orderitems %}
 
- 
- <div class="panel panel-info" style="width:200px;border:2px solid red;" >
-  <div class="panel-body">{{orderitem.order_id}}</div>
-</div>
+  <div class="col-md-12 col-sm-6">
+    <div class="card">
+      <div class="card-header text-uppercase"><b>Orders</b></div>
+      <div class="items-list">
+        {% for order in orders %}
 
-{% endfor %}
+        <div class="il-item">
+          <a class="text-black" href="{% url 'restaurant-order-detail' order.id %}" >
+            <div class="media">
+              <!-- <div class="media-left">
+                <div class="box-48">
+                  <img class="img-fluid" src="img/photos-2/1.jpg" alt="">
+                </div>
+              </div> -->
+              <div class="media-body">
+                <h6 class="media-heading">Order #{{order.id}}</h6>
+                <span class="text-muted">RS {{order.price}}</span>
+              </div>
+            </div>
+            <div class="il-icon"><i class="fa fa-angle-right"></i></div>
+          </a>
+        </div>
+        {% endfor %}
+      </div>
+      <!-- <div class="card-block">
+        <button type="submit" class="btn btn-primary btn-block">Show more</button>
+      </div> -->
+    </div>
+  </div>
 
 </div>
 

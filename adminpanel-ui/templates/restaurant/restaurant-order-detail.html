@@ -1,15 +1,19 @@
 {% extends 'restaurant/restaurant-base.html' %}{% load static %}
-{% block title %}Restaurant Dashboard{% endblock %}
+{% block title %}Order Details{% endblock %}
 {% block content %}
+
 <div class="row">
 
+  {% for orderitem in orderitems %}
+  <div>{{orderitem}}</div>
+  {% endfor %}
 
 </div>
 
 
 
+
 {% endblock %}
 {% block js_files %}
-<script src= "{% static 'assets/js/notifier/websocket.js' %}"></script>
 
 {% endblock %}

@@ -44,3 +44,6 @@ class OrderItem(models.Model):
     quantity=models.IntegerField(null=True)
     status=models.CharField(max_length=20,null=True)
     price=models.IntegerField(null=True)
+
+    def get_orderitems_by_order_id(order_id):
+        return OrderItem.objects.filter(order_id=order_id)

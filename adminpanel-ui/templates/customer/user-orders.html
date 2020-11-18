@@ -4,12 +4,52 @@
 {% block content %}
 <div class="row">
     {% for order in orders %}
-    
-      <div>{{order}}</div>
+
+    <div class="col-md-12 col-sm-6 mb-2">
+      <div class="card">
+        <div class="card-header text-uppercase">
+          <span>
+            <b>Order # {{order.id}}</b>
+          </span>
+        
+        <span class="text-right-custom">
+         
+          <b>  <a href="{% url 'user-order-detail' order.id %}"> Order Details </a></b>
+        </span>
+        </div>
+        <div class="items-list">
+          <div class="box box-block bg-white mb-0">
+            <!-- <h5 class="text-right-custom">Order Details</h5><br> -->
+            <div class="owl-carousel">
+
+          {% for orderitem in orderitems %}
+              {% if orderitem.order_id == order.id %}
+                <div class="item">{{orderitem}}
+
+
+                  <img src="{% static 'assets/img/restaurant/avatar-5.jpg' %}" alt="Card image" style="width:100%">
+
+                </div>
+              {% endif %}
+          {% endfor %}
+          
+    </div>
+  </div>
+
+  </div>
+     
+  </div>
+  </div>
+      
+        
 {% endfor %}
 </div>
+
+
+
 {% endblock %}
 
 {% block js_files %}
+<script src= "{% static 'assets/js/customer/user-orders.js' %}"></script>
 
 {% endblock %}

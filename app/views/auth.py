@@ -53,7 +53,7 @@ class LoginViewSet(APIView):
         user = authenticate(username=username, password=password)
         
         if not user:
-            return error_response('The username is not a registered admin panel account.')
+            return error_response('The username is not a registered.')
             
         if not user.is_active:
             return error_response('Please contact an administrator regarding this account.')

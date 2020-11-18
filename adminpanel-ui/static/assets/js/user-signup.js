@@ -1,23 +1,23 @@
 $( document ).ready(function() {
     var api_manager= new ApiManager()
     var util = new Util();
-    // $( "#target" ).click(function() {
-    //     alert( "Handler for .click() called." );
-    //   });
+
     $("#user-signup-form").submit(function(e){
+        util.hideErrors();
         
         e.preventDefault();
         data=util.getFormData(this,true);
-        console.log(data)
         data['user']['user_type']=4
 
         api_manager.sendRequest('/api/customer/',"post" , data, function(resp){
+            
             if(resp.type === "+OK") {
-                if(method === "post"){
-                    console.log(data)
-                }
+                
+                util.showMsg(".success-msg", resp.message);
+                
             } else {
-                console.log("Response err");
+
+                util.showMsg(".error-msg", resp.message);
             }
         });
     });
@@ -32,9 +32,8 @@ $( document ).ready(function() {
 
         api_manager.sendRequest('/api/restaurant/',"post" , data, function(resp){
             if(resp.type === "+OK") {
-                if(method === "post"){
                     console.log(data)
-                }
+                
             } else {
                 console.log("Response err");
             }

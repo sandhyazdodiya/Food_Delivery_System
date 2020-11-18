@@ -38,12 +38,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'channels',
+
     #custom-apps
     'app',
     'custom_user',
+    'notifier',
     'rest_framework',
-
-]
+    
+    ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -74,6 +77,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'adminpanel.wsgi.application'
+ASGI_APPLICATION = "adminpanel.asgi.application"
 
 
 # Database
@@ -152,4 +156,15 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.MultiPartParser'
     ],
     'EXCEPTION_HANDLER': 'core.utils.custom_exception_handler',
+}
+
+
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("localhost", 6379)],
+        },
+    },
 }

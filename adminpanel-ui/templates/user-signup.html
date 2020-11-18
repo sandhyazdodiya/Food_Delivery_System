@@ -15,31 +15,45 @@
       
             <div class="form-group">
               <input type="email" name="user-email" class="form-control form-control-user" id="exampleInputEmail" placeholder="Email Address">
+
             </div>
+            <div class="err-email alert alert-danger error-msg"></div>
+
             <div class="form-group row">
               <div class="col-sm-6 mb-3 mb-sm-0">
                 <input type="text" name="user-phone" class="form-control form-control-user" id="exampleFirstName" placeholder="Mobile Number">
+                <div class="err-phone alert alert-danger error-msg"></div>
+
               </div>
+
               <div class="col-sm-6">
                 <input type="text" name="city" class="form-control form-control-user" id="exampleLastName" placeholder="City">
+                <div class="err-city alert alert-danger error-msg"></div>
+
               </div>
             </div>
             <div class="form-group row">
               <div class="col-sm-6 mb-3 mb-sm-0">
                 <input type="text" name="state" class="form-control form-control-user" id="exampleFirstName" placeholder="State">
+                <div class="err-state alert alert-danger error-msg"></div>
+
               </div>
               <div class="col-sm-6">
                 <input type="text" name="country" class="form-control form-control-user" id="exampleLastName" placeholder="Country">
+                <div class="err-country alert alert-danger error-msg"></div>
               </div>
             </div>
             <div class="form-group row">
               <div class="col-sm-6 mb-3 mb-sm-0">
                 <input type="password" name="user-password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password">
+                <div class="err-password alert alert-danger error-msg"></div>
               </div>
               <div class="col-sm-6">
                 <input type="password" class="form-control form-control-user" id="exampleRepeatPassword" placeholder="Repeat Password">
               </div>
             </div>
+            <div class="alert alert-danger error-msg"></div>
+            <div class="alert alert-success success-msg"></div>
             <button type="submit" class="btn btn-primary btn-user btn-block">Register Account</button>
             <hr>
             <!-- <a href="index.html" class="btn btn-google btn-user btn-block">

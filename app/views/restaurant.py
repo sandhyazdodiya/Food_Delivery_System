@@ -129,14 +129,22 @@ class RestaurantOrders(LoginRequiredMixin,View):
     def get(self, request):
         user_id=request.user.id
         restaurant=Restaurant.objects.get(user_id=user_id)
-        # foods=FoodItem.objects.filter(restaurant_id=restaurant.id).values_list('id', flat=True)
-        # orderitems=OrderItem.objects.filter(food_id__in=foods).values_list('order_id',flat=True).distinct()
 
         foods=FoodItem.get_fooditems_by_restaurant(restaurant.id)
         print(foods)
-        orderitems=OrderItem.objects.filter(food_id__in=foods)
+        order_ids=list(set(OrderItem.objects.filter(food_id__in=foods).values_list('order_id', flat=True)))
+        orders=Order.objects.filter(id__in=order_ids)
+        print(orders)
 
+        return render(request, self.template_name, locals())
+
+class RestaurantOrderDetail(LoginRequiredMixin,View):
+
+    template_name = "restaurant/restaurant-order-detail.html"
+   
+    def get(self, request,order_id=None):
+
+        orderitems=OrderItem.objects.filter(order_id=order_id)
         print(orderitems)
-        # orderitems=OrderItem.objects.filter(food_id__in=foods).values_list('food_id',flat=True)
-        # orderedfoods=FoodItem.objects.filter(id__in=orderitems)
+
         return render(request, self.template_name, locals())

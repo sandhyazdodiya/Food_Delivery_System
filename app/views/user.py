@@ -11,12 +11,19 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework.views import APIView
 from core.utils import *
 
+from datetime import datetime
+
+# Django Channels
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
+
 class UserDashboardView(LoginRequiredMixin,View):
     
     template_name = "customer/dashboard.html"
 
     def get(self, request):
         print("from session",request.session.get('customer_id'))
+
         restaurants=Restaurant.objects.all()
         return render(request, self.template_name, locals())
 
@@ -26,7 +33,7 @@ class CustomerViewset(viewsets.ModelViewSet):
     serializer_class = CustomerProfileSerializer
     def create(self, request, *args, **kwargs):
         serializer = super().create(request, *args, **kwargs)
-        return Response({"Success": "Registered Sucessfully"},)
+        return success_response('User Registered Successfully.')
 
 
 class OrderViewset(viewsets.ModelViewSet):
@@ -65,6 +72,18 @@ class AddtoCartViewSet(APIView):
         else:
             return error_response('Error While adding into cart',None,status.HTTP_400_BAD_REQUEST)
 
+class GetCartViewSet(APIView):
+    
+    def get(self,request):
+        cart=request.session['cart']
+        query=request.query_params
+        data=dict(query.lists())
+        data_list=list(data.keys())
+        food_id=data_list[0]
+        item_count=cart.get(food_id,"No item found")
+
+        return success_response("Cart updated",item_count)
+
 class UserOrdersView(LoginRequiredMixin,View):
     
     template_name = "customer/user-orders.html"
@@ -73,8 +92,21 @@ class UserOrdersView(LoginRequiredMixin,View):
         customer_id=request.user.id
         customer=Customer.objects.get(user_id=customer_id)
         orders=Order.objects.filter(customer=customer)
+        order_ids=list(orders.values_list('id', flat=True))
+        orderitems=OrderItem.objects.filter(order_id__in=order_ids)
         return render(request, self.template_name, locals())
 
+class UserOrderDetailView(LoginRequiredMixin,View):
+
+    template_name = "customer/user-order-details.html"
+
+    def get(self, request,order_id=None):
+        customer_id=request.user.id
+        customer=Customer.objects.get(user_id=customer_id)
+        orderitems=OrderItem.objects.filter(order_id=order_id)
+        order=Order.objects.get(id=order_id)
+        
+        return render(request, self.template_name, locals())
 
 
 class CartView(LoginRequiredMixin,View):
@@ -107,6 +139,17 @@ class PlaceOrderAPIView(APIView):
                             price=fooditem.price)
                 orderitem.save()
             request.session['cart'] = {}
+            current_user = request.user
+            channel_layer = get_channel_layer()
+            data = "notification"+ "...." + str(datetime.now())
+            # Trigger message sent to group
+            async_to_sync(channel_layer.group_send)(
+                "noti",  # Channel Name, Should always be string
+                {
+                    "type": "notify",   # Custom Function written in the consumers.py
+                    "text": data,
+                },
+            )  
             return success_response('Order created successfully')
         else:
             return error_response('Error While Placing order',None,status.HTTP_400_BAD_REQUEST)
