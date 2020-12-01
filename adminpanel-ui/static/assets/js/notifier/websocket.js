@@ -10,6 +10,7 @@ $(document).ready(function(){
     socket.onmessage = function(event) {
         console.log(event)
         console.log(`[message] Data received from server: ${event.data}`);
+        $(".order-notification").html(event.data)
     };
     
     socket.onclose = function(event) {

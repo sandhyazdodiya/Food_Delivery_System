@@ -45,9 +45,14 @@ class NotificationConsumer(WebsocketConsumer):
             self.close()
         else:
             # print(self.scope["user"])   # Can access logged in user details by using self.scope.user, Can only be used if AuthMiddlewareStack is used in the routing.py
-            self.group_name = "noti"  # Setting the group name as the pk of the user primary key as it is unique to each user. The group name is used to communicate with the user.
-            print(self.channel_name)
-            print(self.scope["user"].email)
+            
+            user_id=str(self.scope["user"].id)
+            self.group_name = user_id
+
+
+            # Setting the group name as the pk of the user primary key as it is unique to each user. The group name is used to communicate with the user.
+            print(self.group_name)
+            print(self.scope["user"].id)
             async_to_sync(self.channel_layer.group_add)(self.group_name, self.channel_name)
             self.accept()
 

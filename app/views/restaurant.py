@@ -29,9 +29,11 @@ class RestaurantView(View):
 
 
 class FoodItemViewset(ViewSetPatch,viewsets.ModelViewSet):
+
     queryset = FoodItem.objects.all()
     serializer_class = FoodItemSerializer
     parser_classes = (FormParser, MultiPartParser)
+
     def create(self, request, *args, **kwargs):
         #To make Query dict mutable
         request.POST._mutable = True
@@ -133,7 +135,7 @@ class RestaurantOrders(LoginRequiredMixin,View):
         foods=FoodItem.get_fooditems_by_restaurant(restaurant.id)
         print(foods)
         order_ids=list(set(OrderItem.objects.filter(food_id__in=foods).values_list('order_id', flat=True)))
-        orders=Order.objects.filter(id__in=order_ids)
+        orders=Order.objects.filter(id__in=order_ids).order_by('-id')
         print(orders)
 
         return render(request, self.template_name, locals())
@@ -148,3 +150,42 @@ class RestaurantOrderDetail(LoginRequiredMixin,View):
         print(orderitems)
 
         return render(request, self.template_name, locals())
+
+# upload CSV FILE
+import csv, io
+from core.utils import *
+import json
+from django.http import HttpResponse
+from rest_framework.decorators import api_view
+
+@api_view(('POST',))
+def food_upload(request):
+    if request.method=="POST":
+        csv_file = request.FILES['file']
+        data_set = csv_file.read().decode('UTF-8')
+        io_string = io.StringIO(data_set)
+        next(io_string)
+        for column in csv.reader(io_string, delimiter=',', quotechar="|"):
+            _, created = FoodItem.objects.update_or_create(
+                name=column[0],
+                description=column[1],
+                price=column[2],
+                restaurant_id=column[3],
+                image=column[4],
+                isnonveg=column[5]
+            )
+        data={}
+    return success_response("Uploaded Succesfully")
+
+#EXport model data to csv
+def food_export(request):
+    # Create the HttpResponse object with the appropriate CSV header.
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="somefilename.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['name', 'description', 'price', 'restaurant_id','image','isnonveg'])
+    fooditems = FoodItem.objects.all().values_list('name', 'description', 'price', 'restaurant_id','image','isnonveg')
+    for fooditem in fooditems:
+        writer.writerow(fooditem)
+    return response

@@ -120,18 +120,27 @@ class CartView(LoginRequiredMixin,View):
         return render(request, self.template_name, locals())
 
 class PlaceOrderAPIView(APIView):
+
     def post(self,request):
+
         customer_id=request.session.get("customer_id",None)
         cart = request.session.get('cart',None)
         price=request.data.get("price",None)
+
         if price and cart and customer_id:
             fooditems = FoodItem.get_fooditems_by_id(list(cart.keys()))
             order=Order(customer=Customer(customer_id),
                         status="active",
                         price=price )
             order.save()
+
+            restaurant_ids=[]
+            print("=========res===========")
+            
             for fooditem in fooditems:
-                print(cart.get(str(fooditem.id)))
+                print(fooditem.restaurant_id)
+                restaurant_ids.append(fooditem.restaurant_id)
+
                 orderitem = OrderItem(order=order,
                             food=fooditem,
                             quantity=cart.get(str(fooditem.id)),
@@ -139,17 +148,29 @@ class PlaceOrderAPIView(APIView):
                             price=fooditem.price)
                 orderitem.save()
             request.session['cart'] = {}
+
+            print(list(set(restaurant_ids)))
+            restaurant_users = Restaurant.get_restaurant_by_id(restaurant_ids).values_list('user_id',flat=True)
+            restaurant_users=list(restaurant_users)
+            
             current_user = request.user
             channel_layer = get_channel_layer()
-            data = "notification"+ "...." + str(datetime.now())
+
+            data = "New Order Received."
+
             # Trigger message sent to group
-            async_to_sync(channel_layer.group_send)(
-                "noti",  # Channel Name, Should always be string
-                {
-                    "type": "notify",   # Custom Function written in the consumers.py
-                    "text": data,
-                },
-            )  
+            for restaurant_user in restaurant_users:
+                restaurant_user=str(restaurant_user)
+                async_to_sync(channel_layer.group_send)(
+                    restaurant_user,  # Channel Name, Should always be string
+                    {
+                        "type": "notify",   # Custom Function written in the consumers.py
+                        "text": data,
+                    },
+                )  
+
             return success_response('Order created successfully')
+            
         else:
+
             return error_response('Error While Placing order',None,status.HTTP_400_BAD_REQUEST)

@@ -52,6 +52,8 @@ urlpatterns = [
     path('cart/', login_required(CartView.as_view()), name='user-cart'),
     path('place-order/',login_required(PlaceOrderAPIView.as_view()), name='place-order'),
     path('foods/', login_required(FoodsView.as_view()), name='food-list'),
+    path('upload-food-csv/', food_upload, name="food-upload"),
+    path('export-food-csv/', food_export, name="food-export"),
     
     path('api/', include(router.urls)),
 ]

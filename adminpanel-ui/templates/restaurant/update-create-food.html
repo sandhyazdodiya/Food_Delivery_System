@@ -2,6 +2,29 @@
 {% block title %}{% if action == "edit" %}Update Food Details {% else %}Add New Food{% endif %}{% endblock %}
 {% block header %} {% if action == "edit" %}Update Food Details {% else %}Add New Food{% endif %}{% endblock %}
 {% block content %}
+
+
+
+<div class="card o-hidden border-0 shadow-lg mb-2">
+  <div class="card-body p-0">
+    <!-- Nested Row within Card Body -->
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="p-5">
+          <form method="post" id="food-csv-upload" enctype="multipart/form-data">
+            Select File to upload:
+            <input type="file" name="file" id="file">
+            <input type="submit" value="Upload File" name="submit">
+          </form>
+          <a href="{% url 'food-export' %}">Export Food Details</a>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <div class="card o-hidden border-0 shadow-lg ">
       <div class="card-body p-0">
         <!-- Nested Row within Card Body -->

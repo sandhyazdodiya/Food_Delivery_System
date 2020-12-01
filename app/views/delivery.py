@@ -9,8 +9,10 @@ from custom_user.serializers import *
 
 
 class DeliveryPersonViewset(viewsets.ModelViewSet):
+
     queryset = DeliveryPerson.objects.all()
     serializer_class = DeliveryPersonProfileSerializer
+    
     def create(self, request, *args, **kwargs):
         serializer = super().create(request, *args, **kwargs)
         return Response({"Success": "Registered Sucessfully"},)

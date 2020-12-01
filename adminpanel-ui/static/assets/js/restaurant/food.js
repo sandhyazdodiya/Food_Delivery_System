@@ -31,7 +31,20 @@ $( document ).ready(function() {
         },undefined,false);
     });
 
-
+    $("#food-csv-upload").submit(function(e){
+        e.preventDefault();
+        var data= new FormData(this);
+        console.log(data)
+        api_manager.sendRequest("/upload-food-csv/","post" , data, function(resp){
+            if(resp.type === "+OK") {
+                    console.log(data)
+                
+            } else {
+                console.log("Response err");
+            }
+        },undefined,false);
+       
+    });
 
 
 });
