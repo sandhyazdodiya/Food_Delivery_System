@@ -130,15 +130,13 @@ class PlaceOrderAPIView(APIView):
         if price and cart and customer_id:
             fooditems = FoodItem.get_fooditems_by_id(list(cart.keys()))
             order=Order(customer=Customer(customer_id),
-                        status="active",
+                        status="Placed",
                         price=price )
             order.save()
 
             restaurant_ids=[]
-            print("=========res===========")
             
             for fooditem in fooditems:
-                print(fooditem.restaurant_id)
                 restaurant_ids.append(fooditem.restaurant_id)
 
                 orderitem = OrderItem(order=order,
@@ -148,15 +146,17 @@ class PlaceOrderAPIView(APIView):
                             price=fooditem.price)
                 orderitem.save()
             request.session['cart'] = {}
-
-            print(list(set(restaurant_ids)))
+            
             restaurant_users = Restaurant.get_restaurant_by_id(restaurant_ids).values_list('user_id',flat=True)
-            restaurant_users=list(restaurant_users)
             
             current_user = request.user
             channel_layer = get_channel_layer()
 
-            data = "New Order Received."
+            data = {}
+            
+            data["order_id"]=order.id
+            data["message"]="New Order Received"
+            data["event_type"]="new_order"
 
             # Trigger message sent to group
             for restaurant_user in restaurant_users:
@@ -165,7 +165,7 @@ class PlaceOrderAPIView(APIView):
                     restaurant_user,  # Channel Name, Should always be string
                     {
                         "type": "notify",   # Custom Function written in the consumers.py
-                        "text": data,
+                        "data": data,
                     },
                 )  
 

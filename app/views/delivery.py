@@ -16,3 +16,24 @@ class DeliveryPersonViewset(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         serializer = super().create(request, *args, **kwargs)
         return Response({"Success": "Registered Sucessfully"},)
+
+class DeliveryPersonView(View):
+    
+    template_name = "dperson/dperson-profile.html"
+
+    def get(self, request):
+        return render(request, self.template_name, locals())
+
+class DeliveryPersonDashaboard(View):
+    """
+    Render DeliveryPerson Dashboard page.
+
+    :param request:
+    :return:
+    """
+    
+    template_name = "dperson/dashboard.html"
+    
+    def get(self, request):
+        user_id=request.user.id
+        return render(request, self.template_name, locals())

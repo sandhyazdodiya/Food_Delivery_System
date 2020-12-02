@@ -14,8 +14,8 @@ body {
 }
 .btn-primary {
   color: #fff;
-  background-color: #f38508;
-  border-color: #f38508;;
+  background-color: #f38508 ;
+  border-color: #f38508;
 }
 #customer-dashboard .card-body{
   padding: 10px;

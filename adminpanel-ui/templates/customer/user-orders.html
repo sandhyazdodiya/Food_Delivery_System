@@ -1,6 +1,7 @@
 
 {% extends 'customer/base.html' %}{% load static %}
 {% block title %}My orders{% endblock %}
+{% block header %} My Order {% endblock %}
 {% block content %}
 <div class="row">
     {% for order in orders %}

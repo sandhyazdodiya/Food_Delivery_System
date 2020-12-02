@@ -38,11 +38,9 @@ class FoodItemViewset(ViewSetPatch,viewsets.ModelViewSet):
         #To make Query dict mutable
         request.POST._mutable = True
         user_id=self.request.user.id
-        print(request)
         restaurant=Restaurant.objects.filter(user_id=user_id).values('id').last()
         restaurant_id=restaurant.get("id")
         request.data['restaurant'] = restaurant_id
-        print(request.data)
         return super().create(request, *args, **kwargs)
        
 
@@ -129,15 +127,13 @@ class RestaurantOrders(LoginRequiredMixin,View):
     template_name = "restaurant/restaurant-orders.html"
 
     def get(self, request):
+
         user_id=request.user.id
         restaurant=Restaurant.objects.get(user_id=user_id)
-
         foods=FoodItem.get_fooditems_by_restaurant(restaurant.id)
-        print(foods)
         order_ids=list(set(OrderItem.objects.filter(food_id__in=foods).values_list('order_id', flat=True)))
         orders=Order.objects.filter(id__in=order_ids).order_by('-id')
-        print(orders)
-
+        statuses=[ status[0] for status in Order.STATUS]
         return render(request, self.template_name, locals())
 
 class RestaurantOrderDetail(LoginRequiredMixin,View):

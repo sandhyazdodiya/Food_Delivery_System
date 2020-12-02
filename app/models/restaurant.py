@@ -52,8 +52,16 @@ class FoodItem(models.Model):
 #model for Order      
 class Order(models.Model):
 
+    STATUS = (
+        ('Placed', 'Placed'),
+        ('Accepted', 'Accepted'),
+        ('Processed', 'Processed'),
+        ('Pickup', 'Pickup'),
+        ('Delivered', 'Delivered'),
+    )
+
     customer=models.ForeignKey(Customer,on_delete = models.CASCADE)
-    status=models.CharField(max_length=20)
+    status=models.CharField(max_length=20,choices=STATUS)
     price=models.IntegerField(null=True)
 
 #model for OrderItem

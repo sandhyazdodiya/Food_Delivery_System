@@ -54,6 +54,11 @@ urlpatterns = [
     path('foods/', login_required(FoodsView.as_view()), name='food-list'),
     path('upload-food-csv/', food_upload, name="food-upload"),
     path('export-food-csv/', food_export, name="food-export"),
+
+
+    #Delivery Person
+    path('dperson-signup/', DeliveryPersonView.as_view(), name='create-dperson-profile'),
+
     
     path('api/', include(router.urls)),
 ]
